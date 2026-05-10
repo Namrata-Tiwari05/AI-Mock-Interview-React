@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "yt-ai-mock-interview"
-  }
+    "default": "ai-mock-interview-a7198",
+    "for development": "ai-mock-interview-a7198"
+  },
+  "targets": {},
+  "etags": {}
 }

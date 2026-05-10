@@ -32,10 +32,10 @@ export const QuestionSection = ({ questions }: QuestionSectionProps) => {
         setCurrentSpeech(speech);
 
         // handle the speech end
-        speech.onend = () => {
+        speech.addEventListener("end", () => {
           setIsPlaying(false);
           setCurrentSpeech(null);
-        };
+        });
       }
     }
   };

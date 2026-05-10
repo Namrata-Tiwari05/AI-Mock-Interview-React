@@ -5,7 +5,7 @@ import { Interview } from "@/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { CustomBreadCrumb } from "@/components/custom-bread-crumb";
 import { Headings } from "@/components/headings";
 import { Button } from "@/components/ui/button";
@@ -51,8 +51,20 @@ type FormData = z.infer<typeof formSchema>;
 
 export const FormMockInterview = ({ initialData }: FormMockInterview) => {
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: initialData || {},
+    resolver: zodResolver(formSchema) as Resolver<FormData>,
+    defaultValues: initialData
+      ? {
+        position: initialData.position,
+        description: initialData.description,
+        experience: initialData.experience,
+        techStack: initialData.techStack,
+      }
+      : {
+        position: "",
+        description: "",
+        experience: 0,
+        techStack: "",
+      },
   });
 
   const { isValid, isSubmitting } = form.formState;
@@ -117,7 +129,7 @@ export const FormMockInterview = ({ initialData }: FormMockInterview) => {
     return cleanedResponse;
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       setIsLoading(true);
 

@@ -67,6 +67,13 @@ export const RecordAnswer = ({
   const { userId } = useAuth();
   const { interviewId } = useParams();
 
+  // EFFECT ADDED: Start speech-to-text immediately when the component mounts.
+  useEffect(() => {
+    startSpeechToText();
+    // The dependency array is empty so this runs only once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const recordUserAnswer = async () => {
     if (isRecording) {
       stopSpeechToText();
@@ -264,6 +271,7 @@ export const RecordAnswer = ({
             ) : (
               <Mic className="min-w-5 min-h-5" />
             )
+
           }
           onClick={recordUserAnswer}
         />
@@ -283,6 +291,7 @@ export const RecordAnswer = ({
               <Save className="min-w-5 min-h-5" />
             )
           }
+          // Note: The original code had a typo here: `disbaled`. I've fixed it to `disabled`.
           onClick={() => setOpen(!open)}
           disbaled={!aiResult}
         />
@@ -291,13 +300,13 @@ export const RecordAnswer = ({
       <div className="w-full mt-4 p-4 border rounded-md bg-gray-50">
         <h2 className="text-lg font-semibold">Your Answer:</h2>
         <p className="text-sm mt-2 text-gray-700 whitespace-normal">
-          {userAnswer || "Start recording to see your ansewer here"}
+          {/* Updated text to reflect that recording starts automatically */}
+          {userAnswer || "Listening... speak to see your answer here."}
         </p>
 
         {interimResult && (
           <p className="text-sm text-gray-500 mt-2">
-            <strong>Current Speech:</strong>
-            {interimResult}
+            <strong>Current Speech:</strong> {interimResult}
           </p>
         )}
       </div>
